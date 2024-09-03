@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export const NavMenu = ({ isMenuOpen, closeMenu }) => {
   return (
@@ -9,6 +10,7 @@ export const NavMenu = ({ isMenuOpen, closeMenu }) => {
         <li><a href="#services" onClick={closeMenu}>Services</a></li>
         <li><a href="#contact" onClick={closeMenu}>Contact</a></li>
         <li><button onClick={closeMenu}>Login</button></li>
+        <li><Link to={'/home'}>Home Auth</Link></li>
       </ul>
     </div>
   );
