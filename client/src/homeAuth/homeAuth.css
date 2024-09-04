@@ -7,7 +7,9 @@
     text-align: center;
     font-size: 5em;
     font-family: 'Ruhl';
-    padding: 1rem;
+    padding: 0rem;
+    background: linear-gradient(to right, #ff416c, #ff4b2b);
+    color: white;
 }
 
 .asideBar{
@@ -47,4 +49,31 @@
 }
 .asideBar ul li:hover{
     background-color: #e0e0e0;
+}
+
+.containerContenidoGeneralHomeAuth{
+    grid-column: 2/4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #f5f5f5;
+    height: 90vh;
+    overflow: auto;
+    
+}
+
+.container-cotizar-homeAuth{
+    grid-column: 2/3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #f5f5f5;
+}
+
+.ultimosPedidos{
+    font-size: 4em;
+    text-align: center;
+    margin: 4rem 0rem;
 }

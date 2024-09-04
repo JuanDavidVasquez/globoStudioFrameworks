@@ -1,8 +1,8 @@
 import React from 'react'
 import useHome from '../../hooks/useHome';
 import DashUser from './DashUser';
-import ProyectsUser from './ProyectsUser';
 import CotizarUser from './CotizarUser';
+import PointsUser from './PointsUser';
 
 export default function ContainMain() {
 
@@ -11,9 +11,9 @@ export default function ContainMain() {
 
 
   return (
-    <div>
+    <div className='containerContenidoGeneralHomeAuth'>
       {menuSidebar === 'dashboard' && <DashUser/>}
-      {menuSidebar === 'proyectos' && <ProyectsUser/>}
+      {menuSidebar === 'puntos' && <PointsUser/>}
       {menuSidebar === 'cotizar' && <CotizarUser/>}
     </div>
   )

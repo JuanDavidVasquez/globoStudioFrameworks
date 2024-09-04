@@ -16,8 +16,8 @@ export default function SiderBar() {
     <aside className='asideBar'>
         <ul>
             <li
-            className={` ${menuRuta === 'proyectos' ? 'activeSidebar' : ''}`}
-             onClick={() => handleMenu('proyectos')}>Proyectos</li>
+            className={` ${menuRuta === 'puntos' ? 'activeSidebar' : ''}`}
+             onClick={() => handleMenu('puntos')}>Puntos</li>
             <li
             className={` ${menuRuta === 'dashboard' ? 'activeSidebar' : ''}`}
              onClick={() => handleMenu('dashboard')}>Dashboard</li>
