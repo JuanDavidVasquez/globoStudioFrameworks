@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import Chart from 'react-apexcharts';
+import usePoint from '../../hooks/usePoints';
 
 const pointsData = {
   earned: [
@@ -15,45 +16,29 @@ const pointsData = {
 const totalSavings = pointsData.redeemed.reduce((total, item) => total + item.savings, 0);
 
 export default function PointsUser() {
-  const chartOptions = {
-    series: [{
-      name: 'Ahorro Acumulado',
-      data: [totalSavings]
-    }],
-    options: {
-      chart: {
-        type: 'radialBar'
-      },
-      plotOptions: {
-        radialBar: {
-          dataLabels: {
-            name: {
-              fontSize: '22px',
-            },
-            value: {
-              fontSize: '16px',
-            },
-            total: {
-              show: true,
-              label: 'Total',
-              formatter: () => `${totalSavings} USD`
-            }
-          }
-        }
-      },
-      title: {
-        text: 'Ahorro por Canje de Puntos',
-        align: 'center',
-        style: {
-          fontSize: '20px',
-          color: '#666'
-        }
-      }
-    }
-  };
+
+  const { points, getPoints } = usePoint();
+  
+
+  const handleGetPoints = () => {
+    getPoints();
+  }
+  const totalSavings = points;
+  useEffect(() => {
+    handleGetPoints();
+  }, []);
+
+
+
 
   return (
     <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif', color: '#333' }}>
+
+<div className='pointsGeneralAccumulated'>
+  Total Points: {points.accumulated}
+</div>
+
+
       <h2 style={{ textAlign: 'center', marginBottom: '20px', color: '#4A90E2' }}>Mi Historial de Puntos</h2>
 
       <div style={{
@@ -121,20 +106,6 @@ export default function PointsUser() {
             </tbody>
           </table>
         </div>
-      </div>
-
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: '20px'
-      }}>
-        <Chart
-          options={chartOptions.options}
-          series={chartOptions.series}
-          type="radialBar"
-          height="350"
-        />
       </div>
     </div>
   );

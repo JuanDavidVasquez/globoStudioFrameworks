@@ -17,7 +17,7 @@ const products = [
   { id: 6, categoryId: 3, name: 'Globo Arte 2', price: 18 },
   { id: 7, categoryId: 3, name: 'Globo Arte 3', price: 25 },
   { id: 8, categoryId: 3, name: 'Globo Arte 4', price: 22 },
-  { id: 9, categoryId: 3, name: 'Globo Arte 5', price: 30 }
+  { id: 9, categoryId: 3, name: 'Globo Arte 5', price: 30 },
 ];
 
 // Simulación de puntos

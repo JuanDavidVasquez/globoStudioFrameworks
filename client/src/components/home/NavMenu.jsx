@@ -9,7 +9,8 @@ export const NavMenu = ({ isMenuOpen, closeMenu }) => {
         <li><a href="#about" onClick={closeMenu}>About</a></li>
         <li><a href="#services" onClick={closeMenu}>Services</a></li>
         <li><a href="#contact" onClick={closeMenu}>Contact</a></li>
-        <li><button onClick={closeMenu}>Login</button></li>
+        <li><Link to={'/login'} onClick={closeMenu}>Login</Link></li>
+        <li><Link to={'/register'} onClick={closeMenu}>Register</Link></li>
         <li><Link to={'/home'}>Home Auth</Link></li>
       </ul>
     </div>

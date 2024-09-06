@@ -8,7 +8,7 @@
     font-size: 5em;
     font-family: 'Ruhl';
     padding: 0rem;
-    background: linear-gradient(to right, #ff416c, #ff4b2b);
+    background: linear-gradient(to right, #ca4060, #ff4b2b92);
     color: white;
 }
 
@@ -76,4 +76,13 @@
     font-size: 4em;
     text-align: center;
     margin: 4rem 0rem;
+}
+
+.pointsGeneralAccumulated{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3em;
+    margin: 2rem 0rem;
 }
