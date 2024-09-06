@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
+import useUser from '../../hooks/useUser';
 
 const categories = [
   { id: 1, name: 'Globos' },
@@ -26,6 +27,12 @@ const orders = [
 
 export default function DashUser() {
   const [selectedOrder, setSelectedOrder] = useState(null);
+
+  const {getMyOrders, myOrders} = useUser();
+
+  useEffect(() => {
+    getMyOrders();
+  }, []);
 
   const chartOptions = {
     series: [{

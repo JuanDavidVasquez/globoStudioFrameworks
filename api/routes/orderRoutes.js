@@ -9,7 +9,7 @@ import {
 import checkAuth from '../middleware/checkAuth.js';
 
 router.post('/new-order', checkAuth, createOrder);
-router.get('/:user_id', checkAuth, obtenerOrderUser);
+router.get('/:id', checkAuth, obtenerOrderUser);
 router.get('/order/:id', checkAuth, obtenerOrder);
 
 export default router;

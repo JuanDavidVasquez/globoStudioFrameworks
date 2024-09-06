@@ -155,7 +155,42 @@ const updateOrderwithTotal = async (req, res) => {
     }
 };
 
-  
+const getOrdersByUser = async (req, res) => {
+  const { id_user } = req.params;
+
+  try {
+      // Buscar todas las órdenes del usuario
+      const orders = await Order.find({ user_id: id_user })
+          .select('-__v -createdAt -updatedAt'); // Excluir campos innecesarios
+
+      // Si no se encuentran órdenes
+      if (!orders || orders.length === 0) {
+          return res.status(404).json({ msg: "No se encontraron órdenes para este usuario" });
+      }
+
+      // Iterar sobre cada orden y traer sus items
+      const ordersWithItems = await Promise.all(orders.map(async (order) => {
+          const orderItems = await OrderItem.find({ order_id: order._id })
+              .select('-__v -createdAt -updatedAt')
+              .populate({
+                  path: 'product_id',
+                  model: 'Producto'
+              });
+
+          return {
+              order,
+              orderItems
+          };
+      }));
+
+      res.json(ordersWithItems);
+
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ msg: "Error en el servidor" });
+  }
+};
+
   
   
 
@@ -165,4 +200,5 @@ export{
     createOrderItems,
     updateOrderwithTotal,
     getOrderWithItems,
+    getOrdersByUser
 };

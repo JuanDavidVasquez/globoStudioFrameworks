@@ -8,12 +8,14 @@ import Register from "./pages/Register";
 import { AuthProvider } from "./context/AuthProvider";
 import RutaProtegida from "./layouts/RutaProtegida";
 import { PointProvider } from "./context/PointsProvider";
+import { UserProvider } from "./context/UserProvider";
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
       <AuthProvider>
+      <UserProvider>
         <HomeProvider>
         <PointProvider>
           <Routes>
@@ -27,6 +29,7 @@ function App() {
           </Routes>
           </PointProvider>
         </HomeProvider>
+        </UserProvider>
         </AuthProvider>
       </BrowserRouter>
     </div>
