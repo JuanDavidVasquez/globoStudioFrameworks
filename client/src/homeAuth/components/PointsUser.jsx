@@ -45,7 +45,8 @@ export default function PointsUser() {
         display: 'flex',
         justifyContent: 'space-around',
         marginBottom: '40px',
-        gap: '20px'
+        gap: '20px',
+        fontSize: '1.5em',
       }}>
         <div style={{
           border: '1px solid #ddd',

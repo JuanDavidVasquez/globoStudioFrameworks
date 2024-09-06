@@ -3,48 +3,49 @@ import { Link, useNavigate } from "react-router-dom";
 import imageLogin from "../assets/img/imgLogin.jpg";
 import clienteAxios from "../config/clienteAxios";
 import useAuth from "../hooks/useAuth";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [alerta,setAlerta] = useState({});
 
   const { setAuth } = useAuth();
-
   const navigate = useNavigate();
 
-  const handleSubmit = async e =>{
-
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if([email,password].includes('')){
-      setAlerta({
-        msg:'Todos los campos son obligatorios',
-        error:true
-      });
-      return
+
+    if ([email, password].includes("")) {
+      // Mostrar notificación de error si los campos están vacíos
+      toast.error("Todos los campos son obligatorios");
+      return;
     }
-   
+
     try {
-   
-      const { data } = await clienteAxios.post('/usuarios/login', { email, password })
+      const { data } = await clienteAxios.post("/usuarios/login", {
+        email,
+        password,
+      });
 
-      setAlerta({
-        msg:data.msg,
-        error:false
-      }) 
-      localStorage.setItem('token',data.token);
+      // Mostrar notificación de éxito
+      toast.success(data.msg);
+
+      // Guardar token y redirigir
+      localStorage.setItem("token", data.token);
       setAuth(data);
-      navigate('/home')
+      navigate("/home");
     } catch (error) {
-     console.error(error)
+      // Mostrar notificación de error en caso de fallo
+      toast.error(
+        error.response?.data?.msg || "Hubo un error al iniciar sesión"
+      );
     }
-
-  }
-
-
+  };
 
   return (
     <div className="loginContainer">
+      <ToastContainer /> 
       <div className="loginLogin">
         <h2>Login</h2>
         <form onSubmit={handleSubmit}>
@@ -72,6 +73,9 @@ export default function Login() {
         </form>
         <p>
           Don't have an account? <Link to="/register">Register</Link>
+        </p>
+        <p>
+          Forgot your password? <Link to="/forgot-password">Recover password</Link>
         </p>
       </div>
       <div className="loginImage">

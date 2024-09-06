@@ -1,54 +1,45 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import axios from "axios";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import clienteAxios from "../config/clienteAxios";
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function ConfirmarCuenta() {
-  const [alerta, setAlerta] = useState({});
   const [cuentaConfirmada, setCuentaConfirmada] = useState(false);
-
   const params = useParams();
-
   const { id } = params;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const confirmarCuenta = async () => {
       try {
         const url = `/usuarios/confirmar/${id}`;
         const { data } = await clienteAxios.get(url);
-       
-        setAlerta({
-          msg: data.msg,
-          error: false,
-        });
 
+        toast.success(data.msg);
         setCuentaConfirmada(true);
+
+        setTimeout(() => {
+          navigate('/login');
+        }, 3000); 
       } catch (error) {
-        setAlerta({
-          msg: error.response.data.msg,
-          error: true,
-        });
+        toast.error(error.response?.data?.msg || "Error al confirmar cuenta");
       }
     };
-    confirmarCuenta();
-  }, []);
 
-  const { msg } = alerta;
+    confirmarCuenta();
+  }, [id, navigate]);
 
   return (
-    <div>
-      <h1 className="text-sky-600 font-black text-6xl capitalize">
-        Confirma tu cuenta y comienza a crear tus{" "}
-        <span className="text-slate-700">proyectos</span>
+    <div className="confirm-container">
+      <ToastContainer />
+      <h1 className="confirm-title">
+        Confirma tu cuenta y comienza <br /> a crear tus <span>proyectos</span>
       </h1>
-      <div className="mt-20 md:mt-5 shadow-lg px-10 py-10 rounded-xl bg-white">
-       
+      <div className="confirm-content">
         {cuentaConfirmada && (
-          <Link
-            className="block text-center my-5 text-slate-500 text-sm"
-            to="/"
-          >
-            Inicia Sesión.
+          <Link className="confirm-link" to="/">
+            Inicia Sesión
           </Link>
         )}
       </div>

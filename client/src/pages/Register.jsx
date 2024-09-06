@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import clienteAxios from '../config/clienteAxios'; 
 import imageRegister from '../assets/img/globos_artisticos_3.jpg';
+import { toast } from "react-toastify";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Register() {
   const [nombre, setNombre] = useState('');
@@ -9,6 +12,7 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [repetirPassword, setRepetirPassword] = useState('');
   const [alerta, setAlerta] = useState({});
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -58,11 +62,23 @@ export default function Register() {
     }
   };
 
-  const { msg } = alerta;
+  useEffect(() => {
+    if (alerta.msg) {
+      if (alerta.error) {
+        toast.error(alerta.msg);
+      } else {
+        toast.success(alerta.msg);
+        // Redirigir después de 2 segundos si no es un error
+        setTimeout(() => {
+          navigate('/');
+        }, 5000);
+      }
+    }
+  }, [alerta, navigate]); // Ejecutar el efecto cada vez que `alerta` o `navigate` cambien
 
   return (
     <div className='loginContainer'>
-    {alerta.msg && <div className={`alerta ${alerta.error ? 'error' : 'exito'}`}>{alerta.msg}</div>}
+      <ToastContainer />
       <div className='loginLogin'>
         <h2>Register</h2>
         <form onSubmit={handleSubmit}>

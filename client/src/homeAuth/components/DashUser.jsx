@@ -2,49 +2,36 @@ import React, { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
 import useUser from '../../hooks/useUser';
 
-const categories = [
-  { id: 1, name: 'Globos' },
-  { id: 2, name: 'Decoraciones' },
-  { id: 3, name: 'Globos Artísticos' }
-];
-
-const products = [
-  { id: 1, categoryId: 1, name: 'Globo Azul', price: 10 },
-  { id: 2, categoryId: 1, name: 'Globo Rojo', price: 12 },
-  { id: 3, categoryId: 2, name: 'Guirnalda', price: 20 },
-  { id: 4, categoryId: 2, name: 'Confeti', price: 5 },
-  { id: 5, categoryId: 3, name: 'Globo Arte 1', price: 15 },
-  { id: 6, categoryId: 3, name: 'Globo Arte 2', price: 18 },
-  { id: 7, categoryId: 3, name: 'Globo Arte 3', price: 25 },
-  { id: 8, categoryId: 3, name: 'Globo Arte 4', price: 22 },
-  { id: 9, categoryId: 3, name: 'Globo Arte 5', price: 30 }
-];
-
-const orders = [
-  { id: 1, category: 'Globos', product: 'Globo Azul', price: 10 },
-  { id: 2, category: 'Decoraciones', product: 'Guirnalda', price: 20 }
-];
-
 export default function DashUser() {
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [pending, setPending] = useState(0);
+  const [creation, setCreation] = useState(0);
+  const [shipping, setShipping] = useState(0);
+  const [montage, setMontage] = useState(0);
 
-  const {getMyOrders, myOrders} = useUser();
+  const { getMyOrders, myOrders } = useUser();
 
   useEffect(() => {
     getMyOrders();
+
+    // Filtrar por estado de las órdenes
+    setPending(myOrders.filter(order => order.order.status === 'pendiente').length);
+    setCreation(myOrders.filter(order => order.status === 'creación').length);
+    setShipping(myOrders.filter(order => order.status === 'envío').length);
+    setMontage(myOrders.filter(order => order.status === 'montaje').length);
   }, []);
 
   const chartOptions = {
     series: [{
       name: 'Proyectos',
-      data: [10, 20, 15, 30]
+      data: [pending, creation, shipping, montage]
     }],
     options: {
       chart: {
         type: 'bar'
       },
       xaxis: {
-        categories: ['Pending', 'Creación', 'Envío', 'Montaje']
+        categories: ['Pendiente', 'Creación', 'Envío', 'Montaje']
       },
       title: {
         text: 'Proyectos por Status'
@@ -57,13 +44,11 @@ export default function DashUser() {
   };
 
   const totalValue = (order) => {
-    return order.price;
+    return order.total;  // Usar el total de la orden
   };
 
   return (
     <div style={{ padding: '20px', width:'100%' }}>
-    
-      
       <div style={{ marginBottom: '20px' }}>
         <Chart
           options={chartOptions.options}
@@ -73,42 +58,55 @@ export default function DashUser() {
         />
       </div>
 
-      <h2 className='ultimosPedidos'>Ultimos Pedidos</h2>
+      <h2 className='ultimosPedidos'>Últimos Pedidos</h2>
 
       <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '20px', gap:'2rem', flexWrap:'wrap' }}>
-        {orders.map((order) => (
+        {myOrders.map((order) => (
           <div
-            key={order.id}
+            key={order._id}
             onClick={() => handleCardClick(order)}
             style={{
               border: '1px solid #ccc',
               borderRadius: '8px',
               padding: '16px',
-              width: '200px',
+              fontSize: '2em',
               boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
               cursor: 'pointer'
             }}
           >
-            <h4>{order.category}</h4>
-            <p>{order.product}</p>
-            <p><strong>Valor:</strong> ${totalValue(order)}</p>
+            <h4>Orden ID: {order.order._id}</h4>
+            <p><strong>Status:</strong> {order.order.status}</p>
+            <p><strong>Total:</strong> ${totalValue(order.order)}</p>
           </div>
         ))}
       </div>
+
       {selectedOrder && (
         <div style={{
           border: '1px solid #ccc',
           borderRadius: '8px',
           padding: '16px',
           boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
-        }}>
+        }}
+        className='facturaDetallada'
+        >
           <h3>Factura Detallada</h3>
-          <p><strong>Categoría:</strong> {selectedOrder.category}</p>
-          <p><strong>Producto:</strong> {selectedOrder.product}</p>
-          <p><strong>Precio:</strong> ${selectedOrder.price}</p>
-          {/* Aquí puedes agregar más detalles según sea necesario */}
+          <p><strong>ID de la Orden:</strong> {selectedOrder.order._id}</p>
+          <p><strong>Status:</strong> {selectedOrder.order.status}</p>
+          <h4>Items:</h4>
+          <ul>
+            {selectedOrder.orderItems.map((item, index) => (
+              <li key={index}>
+                <p>Producto: {item.product_id.name}, Cantidad: {item.quantity}</p>
+              </li>
+            ))}
+          </ul>
+          <p><strong>Subtotal:</strong> ${selectedOrder.order.subtotal}</p>
+          <p><strong>Total:</strong> ${selectedOrder.order.total}</p>
+          
         </div>
       )}
+      
     </div>
   );
 }
