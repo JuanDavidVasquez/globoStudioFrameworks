@@ -9,6 +9,8 @@ import { AuthProvider } from "./context/AuthProvider";
 import RutaProtegida from "./layouts/RutaProtegida";
 import { PointProvider } from "./context/PointsProvider";
 import { UserProvider } from "./context/UserProvider";
+import ConfirmarCuenta from "./pages/ConfirmarCuenta";
+import OlvidePassword from "./pages/OlvidePassword";
 
 function App() {
   return (
@@ -20,6 +22,11 @@ function App() {
         <PointProvider>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="confirmar/:id" element={<ConfirmarCuenta />} />
+
+            <Route path="registrar" element={<Register />} />
+                <Route path="olvide-password" element={<OlvidePassword />} />
+
 
             <Route path="/login" element={<Login />} />
             <Route path="/register" element=<Register/> />
