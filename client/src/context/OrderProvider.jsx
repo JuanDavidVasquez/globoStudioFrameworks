@@ -6,7 +6,7 @@ const OrderContext = createContext();
 
 const OrderProvider = ({ children }) => {
 
-  const navigate = useNavigate();
+ 
 
 
     const crearOrder = async (order) => {
@@ -26,7 +26,6 @@ const OrderProvider = ({ children }) => {
 
             console.log(data);
 
-            navigate('/');
         } catch (error) {
             console.log(error);
         }

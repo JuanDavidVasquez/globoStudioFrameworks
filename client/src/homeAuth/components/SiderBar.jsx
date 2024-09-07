@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useHome from '../../hooks/useHome';
+import PointsUser from './PointsUser';
 
 export default function SiderBar() {
 
@@ -15,15 +16,25 @@ export default function SiderBar() {
   return (
     <aside className='asideBar'>
         <ul>
-            <li
-            className={` ${menuRuta === 'puntos' ? 'activeSidebar' : ''}`}
-             onClick={() => handleMenu('puntos')}>Puntos</li>
+        <li className='asideBar-points'>
+        <PointsUser/>
+        </li>
             <li
             className={` ${menuRuta === 'dashboard' ? 'activeSidebar' : ''}`}
              onClick={() => handleMenu('dashboard')}>Dashboard</li>
             <li
             className={` ${menuRuta === 'cotizar' ? 'activeSidebar' : ''}`}
              onClick={() => handleMenu('cotizar')}>Cotizar</li>
+        </ul>
+        <ul>
+          <li className='asidebar-admin'>Admin</li>
+          <li
+          className={` ${menuRuta === 'users' ? 'activeSidebar' : ''}`}
+          onClick={() => handleMenu('users')}
+          >Users</li>
+          <li>Categories</li>
+          <li>Products</li>
+          <li>Orders</li>
         </ul>
     </aside>
   );

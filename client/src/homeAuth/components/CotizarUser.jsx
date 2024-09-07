@@ -3,6 +3,7 @@ import useProducts from "../../hooks/useProducts";
 import usePoint from "../../hooks/usePoints";
 import useOrder from "../../hooks/useOrder";
 import useAuth from "../../hooks/useAuth";
+import useHome from "../../hooks/useHome";
 
 export default function CotizarUser() {
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -15,6 +16,7 @@ export default function CotizarUser() {
   const { points, getPoints } = usePoint();
   const { crearOrder } = useOrder();
   const { auth } = useAuth();
+  const { setMenuSidebar } = useHome();
 
   useEffect(() => {
     getProducts(); 
@@ -105,7 +107,7 @@ export default function CotizarUser() {
 
     try {
       await crearOrder(orderData);
-      // Aquí puedes añadir lógica adicional como limpiar el formulario o redirigir al usuario
+      setMenuSidebar('dashboard');
     } catch (error) {
       console.log("Error al crear la orden:", error);
     }

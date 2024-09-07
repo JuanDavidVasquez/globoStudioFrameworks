@@ -157,11 +157,11 @@ const updateOrderwithTotal = async (req, res) => {
 };
 
 const getOrdersByUser = async (req, res) => {
-  const { id_user } = req.params;
+  const { id } = req.params;
 
   try {
       // Buscar todas las órdenes del usuario
-      const orders = await Order.find({ user_id: id_user })
+      const orders = await Order.find({ user_id: id })
           .select('-__v -createdAt -updatedAt'); // Excluir campos innecesarios
 
       // Si no se encuentran órdenes

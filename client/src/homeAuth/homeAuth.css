@@ -86,12 +86,26 @@
 .pointsGeneralAccumulated{
     width: 100%;
     display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 1.5em;
+    margin: 2rem 0rem;
+    font-family: 'Ruhl';
+}
+.pointsGeneralAccumulated span{
+    font-family: 'Vibes';
+}
+.asideBar-points, .asidebar-admin{
+    background: linear-gradient(180deg, #a03333, #5d073c);
+    color: white;
+}
+.asidebar-admin{
+    height: 75px;
+    display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 3em;
-    margin: 2rem 0rem;
+    font-size: 4em !important;
 }
-
 .facturaDetallada{
     font-size: var(--text);
 }

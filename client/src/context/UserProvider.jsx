@@ -7,6 +7,7 @@ const UserContext = createContext();
 const UserProvider = ({ children }) => {
 
     const [user, setUser] = useState({});
+    const [users, setUsers] = useState([]);
     const [myOrders, setMyOrders] = useState([]);
 
     const {auth} = useAuth();
@@ -32,6 +33,27 @@ const UserProvider = ({ children }) => {
       }
     };
 
+    const getUsers = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        const { data } = await clienteAxios("/usuarios/usuarios", config);
+
+        console.log(data);
+
+        setUsers(data);
+      } catch (error) {
+        console.log(error);
+    }
+  };
+
  
    
 
@@ -40,7 +62,9 @@ const UserProvider = ({ children }) => {
           value={{
             user,
             getMyOrders,
-            myOrders
+            myOrders,
+            getUsers,
+            users,
           }}>
           {children}
           </UserContext.Provider>

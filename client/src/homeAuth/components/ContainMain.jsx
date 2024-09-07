@@ -2,7 +2,7 @@ import React from 'react'
 import useHome from '../../hooks/useHome';
 import DashUser from './DashUser';
 import CotizarUser from './CotizarUser';
-import PointsUser from './PointsUser';
+import Users from './admin/Users';
 
 export default function ContainMain() {
 
@@ -13,7 +13,7 @@ export default function ContainMain() {
   return (
     <div className='containerContenidoGeneralHomeAuth'>
       {menuSidebar === 'dashboard' && <DashUser/>}
-      {menuSidebar === 'puntos' && <PointsUser/>}
+      {menuSidebar === 'users' && <Users/>}
       {menuSidebar === 'cotizar' && <CotizarUser/>}
     </div>
   )
