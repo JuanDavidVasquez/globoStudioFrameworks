@@ -54,6 +54,26 @@ const UserProvider = ({ children }) => {
     }
   };
 
+  const updateUser = async (user) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await clienteAxios.put(`/usuarios/usuarios/${user._id}`, user, config);
+
+      console.log(data);
+
+      setUsers(users.map((u) => (u._id === user._id ? user : u)));
+    } catch (error) {
+      console.log(error);
+    }
+  };
  
    
 
@@ -61,6 +81,7 @@ const UserProvider = ({ children }) => {
         <UserContext.Provider
           value={{
             user,
+            setUser,
             getMyOrders,
             myOrders,
             getUsers,
