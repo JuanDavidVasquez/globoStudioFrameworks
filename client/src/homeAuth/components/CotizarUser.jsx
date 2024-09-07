@@ -1,27 +1,8 @@
-import React, { useState } from 'react';
-
-
-// Datos de prueba
-const categories = [
-  { id: 1, name: 'Globos' },
-  { id: 2, name: 'Decoraciones' },
-  { id: 3, name: 'Globos Artísticos' }
-];
-
-const products = [
-  { id: 1, categoryId: 1, name: 'Globo Azul', price: 10 },
-  { id: 2, categoryId: 1, name: 'Globo Rojo', price: 12 },
-  { id: 3, categoryId: 2, name: 'Guirnalda', price: 20 },
-  { id: 4, categoryId: 2, name: 'Confeti', price: 5 },
-  { id: 5, categoryId: 3, name: 'Globo Arte 1', price: 15 },
-  { id: 6, categoryId: 3, name: 'Globo Arte 2', price: 18 },
-  { id: 7, categoryId: 3, name: 'Globo Arte 3', price: 25 },
-  { id: 8, categoryId: 3, name: 'Globo Arte 4', price: 22 },
-  { id: 9, categoryId: 3, name: 'Globo Arte 5', price: 30 },
-];
-
-// Simulación de puntos
-const points = 500;
+import { useEffect, useState } from "react";
+import useProducts from "../../hooks/useProducts";
+import usePoint from "../../hooks/usePoints";
+import useOrder from "../../hooks/useOrder";
+import useAuth from "../../hooks/useAuth";
 
 export default function CotizarUser() {
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -30,12 +11,24 @@ export default function CotizarUser() {
   const [cart, setCart] = useState([]);
   const [pointsToUse, setPointsToUse] = useState('');
 
+  const { products, getProducts, categories, getCategories } = useProducts();
+  const { points, getPoints } = usePoint();
+  const { crearOrder } = useOrder();
+  const { auth } = useAuth();
+
+  useEffect(() => {
+    getProducts(); 
+    getPoints();
+    getCategories();
+  }, []);
+
   const handleCategoryChange = (e) => {
     const categoryId = e.target.value;
     setSelectedCategory(categoryId);
-    const filteredProducts = products.filter(prod => prod.categoryId === parseInt(categoryId));
+  
+    const filteredProducts = products.filter(prod => prod.category_id && prod.category_id._id === categoryId);
     setAvailableProducts(filteredProducts);
-    setSelectedProduct(''); // Reset product select
+    setSelectedProduct(''); 
   };
 
   const handleProductChange = (e) => {
@@ -43,33 +36,33 @@ export default function CotizarUser() {
   };
 
   const handleAddProduct = () => {
-    const productToAdd = products.find(prod => prod.id === parseInt(selectedProduct));
+    const productToAdd = availableProducts.find(prod => prod._id === selectedProduct);
     if (productToAdd) {
       setCart(prevCart => {
-        const existingProduct = prevCart.find(item => item.id === productToAdd.id);
+        const existingProduct = prevCart.find(item => item._id === productToAdd._id);
         if (existingProduct) {
           return prevCart.map(item =>
-            item.id === productToAdd.id ? { ...item, quantity: item.quantity + 1 } : item
+            item._id === productToAdd._id ? { ...item, quantity: item.quantity + 1 } : item
           );
         } else {
           return [...prevCart, { ...productToAdd, quantity: 1 }];
         }
       });
-      setAvailableProducts(prevProducts => prevProducts.filter(prod => prod.id !== parseInt(selectedProduct)));
+      setAvailableProducts(prevProducts => prevProducts.filter(prod => prod._id !== selectedProduct));
       setSelectedProduct('');
     }
   };
 
   const handleRemoveProduct = (id) => {
     setCart(prevCart => {
-      const productToRemove = prevCart.find(item => item.id === id);
+      const productToRemove = prevCart.find(item => item._id === id);
       if (productToRemove.quantity > 1) {
         return prevCart.map(item =>
-          item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+          item._id === id ? { ...item, quantity: item.quantity - 1 } : item
         );
       } else {
-        setAvailableProducts(prevProducts => [...prevProducts, products.find(prod => prod.id === id)]);
-        return prevCart.filter(item => item.id !== id);
+        setAvailableProducts(prevProducts => [...prevProducts, products.find(prod => prod._id === id)]);
+        return prevCart.filter(item => item._id !== id);
       }
     });
   };
@@ -85,99 +78,135 @@ export default function CotizarUser() {
 
   const calculateTotals = () => {
     const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    const maxDiscount = Math.floor(points / 200) * 10; // Max discount based on points
-    const discount = Math.min(pointsToUse / 200 * 10, maxDiscount); // Discount based on points used
-    const total = subtotal - discount;
+    const maxDiscount = Math.floor(points.accumulated / 200) * 10;
+    const discount = Math.min(pointsToUse / 200 * 10, maxDiscount);
+
+    const total = subtotal - (isNaN(discount) || discount === null ? 0 : discount);
+
     return { subtotal, discount, total };
   };
 
   const { subtotal, discount, total } = calculateTotals();
 
+  // Función para enviar la orden
+  const handleCreateOrder = async () => {
+    const orderData = {
+      items: cart.map(item => ({
+        product_id: item._id,
+        quantity: item.quantity,
+        price: item.price
+      })),
+      user_id: auth._id,
+      pointsUsed: pointsToUse,
+      subtotal,
+      discount,
+      total
+    };
+
+    try {
+      await crearOrder(orderData);
+      // Aquí puedes añadir lógica adicional como limpiar el formulario o redirigir al usuario
+    } catch (error) {
+      console.log("Error al crear la orden:", error);
+    }
+  };
+
   return (
-      <div className="container-cotizar-homeAuth">
-        <div className="modal-content">
-          <h2>Formulario de Cotización</h2>
-          <form>
-            <label>
-              Categoría:
-              <select value={selectedCategory} onChange={handleCategoryChange}>
-                <option value="">Seleccione una categoría</option>
-                {categories.map(cat => (
-                  <option key={cat.id} value={cat.id}>{cat.name}</option>
-                ))}
-              </select>
-            </label>
-
-            <label>
-              Producto:
-              <select value={selectedProduct} onChange={handleProductChange} disabled={!selectedCategory}>
-                <option value="">Seleccione un producto</option>
-                {availableProducts.map(prod => (
-                  <option key={prod.id} value={prod.id}>{prod.name} - ${prod.price}</option>
-                ))}
-              </select>
-              <button type="button" onClick={handleAddProduct} disabled={!selectedProduct}>
-                <i className="fas fa-plus"></i> Agregar
-              </button>
-            </label>
-
-            <label className='labelPoints'>
-              Puntos a usar:
-              <input
-                type="number"
-                value={pointsToUse}
-                onChange={handlePointsChange}
-                min="0"
-                max={points}
-                placeholder="0"
-                className='pointsInput'
-              />
-              <span className='maxPoints'>Max: {points}</span>
-            </label>
-          </form>
-
-          <table>
-            <thead>
-              <tr>
-                <th>Categoría</th>
-                <th>Producto</th>
-                <th>Precio</th>
-                <th>Cantidad</th>
-                <th>Acción</th>
-              </tr>
-            </thead>
-            <tbody>
-              {cart.map(item => (
-                <tr key={item.id}>
-                  <td>{categories.find(cat => cat.id === item.categoryId)?.name || 'Desconocido'}</td>
-                  <td>{item.name}</td>
-                  <td>${item.price}</td>
-                  <td>
-                    <div className="quantity">
-                      {item.quantity}
-                      <button className='resta' onClick={() => handleRemoveProduct(item.id)}><i className="fas fa-minus"></i></button>
-                      <button className='suma' onClick={() => setCart(cart.map(prod => prod.id === item.id ? { ...prod, quantity: prod.quantity + 1 } : prod))}><i className="fas fa-plus"></i></button>
-                    </div>
-                  </td>
-                  <td><button className='eliminar' onClick={() => handleRemoveProduct(item.id)}><i className="fas fa-trash-alt"></i></button></td>
-                </tr>
+    <div className="container-cotizar-homeAuth">
+      <div className="modal-content">
+        <h2>Formulario de Cotización</h2>
+        <form>
+          <label>
+            Categoría:
+            <select value={selectedCategory} onChange={handleCategoryChange}>
+              <option value="">Seleccione una categoría</option>
+              {categories.map(cat => (
+                <option key={cat._id} value={cat._id}>{cat.name}</option>
               ))}
-              <tr>
-                <td colSpan="3">Subtotal</td>
-                <td>${isNaN(subtotal) ? '0' : subtotal.toFixed(2)}</td>
+            </select>
+          </label>
+
+          <label>
+            Producto:
+            <select value={selectedProduct} onChange={handleProductChange} disabled={!selectedCategory}>
+              <option value="">Seleccione un producto</option>
+              {availableProducts.map(prod => (
+                <option key={prod._id} value={prod._id}>{prod.name} - ${prod.price}</option>
+              ))}
+            </select>
+            <button type="button" onClick={handleAddProduct} disabled={!selectedProduct}>
+              <i className="fas fa-plus"></i> Agregar
+            </button>
+          </label>
+
+          <label className='labelPoints'>
+            Puntos a usar:
+            <input
+              type="number"
+              value={pointsToUse}
+              onChange={handlePointsChange}
+              min="0"
+              max={points.accumulated}
+              placeholder="0"
+              className='pointsInput'
+            />
+            <span className='maxPoints'>Max: {points.accumulated}</span>
+          </label>
+        </form>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Categoría</th>
+              <th>Producto</th>
+              <th>Precio</th>
+              <th>Cantidad</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            {cart.map(item => (
+              <tr key={item._id}>
+                <td>{categories.find(cat => cat.id === item.category_id)?.name || 'Desconocido'}</td>
+                <td>{item.name}</td>
+                <td>${item.price}</td>
+                <td>
+                  <div className="quantity">
+                    {item.quantity}
+                    <button className='resta' onClick={() => handleRemoveProduct(item._id)}>
+                      <i className="fas fa-minus"></i>
+                    </button>
+                    <button className='suma' onClick={() => setCart(cart.map(prod => prod._id === item._id ? { ...prod, quantity: prod.quantity + 1 } : prod))}>
+                      <i className="fas fa-plus"></i>
+                    </button>
+                  </div>
+                </td>
+                <td>
+                  <button className='eliminar' onClick={() => handleRemoveProduct(item._id)}>
+                    <i className="fas fa-trash-alt"></i>
+                  </button>
+                </td>
               </tr>
-              <tr>
-                <td colSpan="3">Descuento</td>
-                <td>${isNaN(discount) ? '0' : discount.toFixed(2)}</td>
-              </tr>
-              <tr>
-                <td colSpan="3">Total</td>
-                <td>${isNaN(total) ? '0' : total.toFixed(2)}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+            ))}
+            <tr>
+              <td colSpan="3">Subtotal</td>
+              <td>${isNaN(subtotal) ? '0' : subtotal.toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td colSpan="3">Descuento</td>
+              <td>${isNaN(discount) ? '0' : discount.toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td colSpan="3">Total</td>
+              <td>${isNaN(total) ? '0' : total.toFixed(2)}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <button onClick={handleCreateOrder} className="confirm-order-btn">
+          Confirmar Orden
+        </button>
       </div>
+    </div>
   );
-};
-              
+}

@@ -1,6 +1,7 @@
 import OrderItem from "../models/OrderItem.js";
 import Order from "../models/Order.js";
 import Producto from "../models/Producto.js";
+import Point from "../models/Point.js";
 
 const createOrderItem = async (req, res) => {
     const { order_id, product_id, quantity } = req.body;
@@ -191,10 +192,110 @@ const getOrdersByUser = async (req, res) => {
   }
 };
 
+const createOrderWithItems = async (req, res) => {
+    const { user_id, items, discount = 0,pointsUsed, status = "pendiente" } = req.body;
+    console.log('Request Body:', req.body);
+    
+    // Convierte pointsUsed a número
+    const pointsUsedNumber = Number(pointsUsed);
+    console.log('Points Used (Number):', pointsUsedNumber);
+    
+    try {
+        // Paso 1: Crear la orden vacía
+        const initialOrder = new Order({
+            user_id,
+            points: 0, // Puntos inicialmente a 0
+            subtotal: 0, // Se calculará después
+            total: 0, // Se calculará después
+            discount,
+            status,
+        });
+        const savedOrder = await initialOrder.save();
+    
+        // Paso 2: Crear los OrderItems asociados
+        let subtotal = 0;
+        const orderItems = [];
+    
+        for (const item of items) {
+            const { product_id, quantity, price } = item;
+    
+            // Validar si el producto existe
+            const product = await Producto.findById(product_id);
+            if (!product) {
+                return res.status(400).json({ msg: `Producto con id ${product_id} no encontrado` });
+            }
+    
+            // Calcular el subtotal del item
+            const itemSubtotal = price * quantity; // Usa el precio enviado
+            subtotal += itemSubtotal;
+    
+            // Crear y guardar el OrderItem
+            const orderItem = new OrderItem({
+                order_id: savedOrder._id,
+                product_id,
+                quantity,
+                price,
+            });
+    
+            await orderItem.save();
+            orderItems.push(orderItem);
+        }
+    
+        // Paso 3: Calcular el total después del descuento
+        const totalAfterDiscount = subtotal - discount;
+    
+        // Paso 4: Calcular los puntos ganados por la orden
+        const pointsEarned = Math.floor(Math.max(totalAfterDiscount, 0) / 200000) * 10;
+    
+        // Paso 5: Manejar los puntos del usuario
+        let pointRecord = await Point.findOne({ user_id });
+        if (!pointRecord) {
+            pointRecord = new Point({
+                user_id,
+                accumulated: 0,
+            });
+        }
+    
+        // Verificar si el usuario tiene suficientes puntos para usar
+        console.log(`Puntos disponibles: ${pointRecord.accumulated}`);
+        console.log(`Puntos a usar: ${pointsUsedNumber}`);
+        
+        if (pointsUsedNumber > pointRecord.accumulated) {
+            return res.status(400).json({ msg: "No hay suficientes puntos disponibles para usar" });
+        }
+    
+        // Actualizar puntos acumulados
+        pointRecord.accumulated -= pointsUsedNumber;
+        pointRecord.accumulated += pointsEarned;
+        await pointRecord.save();
+        
+        console.log(`Puntos actualizados: ${pointRecord.accumulated}`);
+    
+        // Paso 6: Actualizar la orden con los datos calculados
+        savedOrder.subtotal = subtotal;
+        savedOrder.total = totalAfterDiscount;
+        savedOrder.points = pointsEarned;
+        savedOrder.discount = discount;
+        await savedOrder.save();
+    
+        // Paso 7: Enviar la respuesta final
+        res.json({
+            order: savedOrder,
+            orderItems,
+            updatedPoints: pointRecord.accumulated,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: "Error en el servidor" });
+    }
+};
+
+
   
   
 
 export{
+    createOrderWithItems,
     createOrderItem,
     updateOrderItem,
     createOrderItems,

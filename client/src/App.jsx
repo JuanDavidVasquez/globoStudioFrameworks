@@ -12,6 +12,8 @@ import { UserProvider } from "./context/UserProvider";
 import ConfirmarCuenta from "./pages/ConfirmarCuenta";
 import OlvidePassword from "./pages/OlvidePassword";
 import NuevoPassword from "./pages/NuevoPassword";
+import { ProductsProvider } from "./context/ProductsProvider";
+import { OrderProvider } from "./context/OrderProvider";
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
           <UserProvider>
             <HomeProvider>
               <PointProvider>
+                <ProductsProvider>
+                  <OrderProvider>
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="confirmar/:id" element={<ConfirmarCuenta />} />
@@ -38,6 +42,8 @@ function App() {
                     <Route index element={<HomeAuth />} />
                   </Route>
                 </Routes>
+                </OrderProvider>
+                </ProductsProvider>
               </PointProvider>
             </HomeProvider>
           </UserProvider>

@@ -86,12 +86,32 @@ const deletePoint = async (req, res) => {
     }
 };
 
+const getPointsByUser = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const user_id = id;
+        const points = await Points.findOne({ user_id })
+
+        if (!points) {
+            return res.status(404).json({ msg: "Puntos no encontrados para el usuario" });
+        }
+
+        res.json(points);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: "Error en el servidor" });
+    }
+}
+
+
 export { 
     createPoint, 
     getPoint, 
     getPoints, 
     updatePoint, 
-    deletePoint
+    deletePoint,
+    getPointsByUser
  };
 
 

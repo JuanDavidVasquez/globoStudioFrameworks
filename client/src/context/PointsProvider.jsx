@@ -21,7 +21,7 @@ const PointProvider = ({ children }) => {
               Authorization: `Bearer ${token}`,
             },
           };
-          const { data } = await clienteAxios(`/points/${auth._id}` ,config);
+          const { data } = await clienteAxios(`/points/user/${auth._id}` ,config);
   
           console.log(data);
   
