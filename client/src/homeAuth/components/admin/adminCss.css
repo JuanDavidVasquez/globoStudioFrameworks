@@ -149,19 +149,37 @@ Formulario de usuario
   .user-form-container {
     max-width: 100%;
     height: 100vh;
-    margin: 0 auto;
-    padding: 20px;
     background: #f7f7f7;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
   }
   
   .user-form-container h1 {
+    width: 100%;
     text-align: center;
     margin-bottom: 20px;
     color: #333;
   }
-  
+  .user-form-container form{
+    width: 50%;
+    min-width: 350px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+  }
+  .user-form-container img{
+    width: 50%;
+    min-width: 350px;
+    height: 100vh;
+  }
+
   .form-group {
     margin-bottom: 15px;
   }
@@ -170,28 +188,337 @@ Formulario de usuario
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
+    font-size: 2em;
   }
   
   .form-group input {
-    width: 100%;
+    width: 50%;
+    min-width: 350px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
   }
   
-  button {
+  .user-form-container  button {
     display: block;
-    width: 100%;
+    width: 50%;
+    min-width: 350px;
     padding: 10px;
     border: none;
     border-radius: 4px;
-    background: #007bff;
-    color: #fff;
     font-size: 16px;
     cursor: pointer;
   }
   
-  button:hover {
-    background: #0056b3;
+  .user-form-container  button:hover {
+    background: #ad4848;
   }
   
+  @media screen and (max-width: 768px) {
+    .user-form-container{
+      background: 
+      linear-gradient(90deg, rgba(255, 255, 255, 0.45), rgba(247, 247, 247, 0.3)), 
+      url('../../../assets/img/globos_artisticos_2.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+    }
+    .user-form-container form{
+      width: 70%;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.45), rgba(247, 247, 247, 0.3));
+      border-radius: 25px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .user-form-container img{
+      display: none;
+    }
+    
+  }
+
+  .Toastify__toast--error{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .Toastify__toast-body{
+    width: 100%;
+  }
+
+
+  /*
+    Categories
+  */
+  .container-categories{
+    min-height: 70vh;
+  }
+
+  /* Contenedor principal de la tabla */
+.table-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Título de la tabla */
+.table-title {
+  font-family: 'Roboto', sans-serif;
+  font-size: 24px;
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+/* Tabla estilizada */
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Open Sans', sans-serif;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Estilo de las cabeceras */
+.styled-table thead tr {
+  background: linear-gradient(90deg, #a03333, #5d073c);
+  color: #fff !important;
+  text-align: left;
+  font-weight: bold;
+}
+.styled-table thead tr th{
+  color: #fff !important;
+  font-size: 2em;
+}
+/* Estilo de las filas */
+.styled-table tbody tr {
+  border-bottom: 1px solid #ddd;
+}
+
+/* Estilo para filas alternas */
+.styled-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+/* Estilo al pasar el ratón por encima de una fila */
+.styled-table tbody tr:hover {
+  background-color: #eaeaea;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* Celdas de la tabla */
+.styled-table td, .styled-table th {
+  padding: 12px 15px;
+}
+
+/* Texto de las celdas */
+.styled-table td {
+  font-size: 16px;
+  color: #555;
+}
+
+/* Mensaje cuando no hay categorías */
+.styled-table tbody tr td[colspan="2"] {
+  text-align: center;
+  padding: 20px;
+  font-style: italic;
+  color: #999;
+}
+
+/* Contenedor de la búsqueda */
+.category-search-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Título del buscador */
+.search-title {
+  font-family: 'Roboto', sans-serif;
+  font-size: 24px;
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+/* Barra de búsqueda */
+.search-input {
+  width: 100%;
+  padding: 10px 15px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  transition: border-color 0.3s;
+}
+
+.search-input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Tabla estilizada */
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Open Sans', sans-serif;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.styled-table thead tr {
+  background-color: #343a40;
+  color: #fff;
+  text-align: left;
+  font-weight: bold;
+}
+
+.styled-table tbody tr {
+  border-bottom: 1px solid #ddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:hover {
+  background-color: #eaeaea;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.styled-table td, .styled-table th {
+  padding: 12px 15px;
+}
+
+.styled-table td {
+  font-size: 16px;
+  color: #555;
+}
+
+.styled-table tbody tr td[colspan="2"] {
+  text-align: center;
+  padding: 20px;
+  font-style: italic;
+  color: #999;
+}
+
+
+/* Fondo oscuro detrás del modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Contenido del modal */
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  width: 500px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.3s ease;
+}
+
+/* Animación de entrada del modal */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Formulario */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  color: #333;
+}
+
+.form-group textarea {
+  height: 100px;
+  resize: none;
+}
+
+/* Botones */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn {
+  margin: 2rem 0rem;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: 'Ruhl', sans-serif;
+  cursor: pointer;
+  transition: all 1s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(90deg, #a03333, #5d073c);
+  color: #fff;
+  transition: all 1s ease;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: #fff;
+}
+.btn-danger {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+.btn-primary:hover{
+  background: linear-gradient(180deg, #a03333, #5d073c);
+  transition: all 1s ease;
+}
+.positionFixed{
+  position: fixed;
+  top: 6rem;
+  right: 2rem;
+}

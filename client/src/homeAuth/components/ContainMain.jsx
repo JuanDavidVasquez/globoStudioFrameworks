@@ -3,6 +3,7 @@ import useHome from '../../hooks/useHome';
 import DashUser from './DashUser';
 import CotizarUser from './CotizarUser';
 import Users from './admin/Users';
+import { Categories } from '../../pages/Categories';
 
 export default function ContainMain() {
 
@@ -15,6 +16,7 @@ export default function ContainMain() {
       {menuSidebar === 'dashboard' && <DashUser/>}
       {menuSidebar === 'users' && <Users/>}
       {menuSidebar === 'cotizar' && <CotizarUser/>}
+      {menuSidebar === 'categories' && <Categories/>}
     </div>
   )
 }

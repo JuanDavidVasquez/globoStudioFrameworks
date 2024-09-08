@@ -155,7 +155,8 @@ const autenticar = async (req, res) => {
   }
 
   const getUsuarios = async (req, res) => {
-    const usuarios = await Usuario.find();
+    const usuarios = await Usuario.find()
+    .select('-__v -createdAt -updatedAt -password -confirmado -token');
     res.json(usuarios);
   };
 
@@ -182,7 +183,7 @@ const autenticar = async (req, res) => {
     
     await usuario.save();
     
-    res.json({ msg: 'Usuario actualizado correctamente', usuario });
+    res.json({ msg: 'Usuario actualizado correctamente' });
   };
   
   

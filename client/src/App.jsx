@@ -15,6 +15,8 @@ import NuevoPassword from "./pages/NuevoPassword";
 import { ProductsProvider } from "./context/ProductsProvider";
 import { OrderProvider } from "./context/OrderProvider";
 import User from "./homeAuth/components/admin/User";
+import { Categories } from "./pages/Categories";
+import { CategoryProvider } from "./context/CategoryProvider";
 
 function App() {
   return (
@@ -26,6 +28,7 @@ function App() {
               <PointProvider>
                 <ProductsProvider>
                   <OrderProvider>
+                  <CategoryProvider>
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="confirmar/:id" element={<ConfirmarCuenta />} />
@@ -42,8 +45,10 @@ function App() {
                   <Route path="/home" element={<RutaProtegida />}>
                     <Route index element={<HomeAuth />} />
                     <Route path="user/:id" element={<User />} />
+                    <Route path="category" element={<Categories />} />
                   </Route>
                 </Routes>
+                </CategoryProvider>
                 </OrderProvider>
                 </ProductsProvider>
               </PointProvider>

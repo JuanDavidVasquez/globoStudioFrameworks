@@ -1,10 +1,16 @@
 import { createContext, useState } from "react";
 import useAuth from "../hooks/useAuth";
 import clienteAxios from "../config/clienteAxios";
+import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
+
+  const navigate = useNavigate();
 
     const [user, setUser] = useState({});
     const [users, setUsers] = useState([]);
@@ -55,6 +61,7 @@ const UserProvider = ({ children }) => {
   };
 
   const updateUser = async (user) => {
+
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
@@ -65,13 +72,19 @@ const UserProvider = ({ children }) => {
           Authorization: `Bearer ${token}`,
         },
       };
-      const { data } = await clienteAxios.put(`/usuarios/usuarios/${user._id}`, user, config);
+      const { data } = await clienteAxios.put(`/usuarios/usuarios/${user.id}`, user, config);
 
-      console.log(data);
+      toast.success("Cuenta actualizada correctamente");
+
+      setTimeout(() => {
+        navigate("/home");
+      }, 2000);
+
 
       setUsers(users.map((u) => (u._id === user._id ? user : u)));
     } catch (error) {
       console.log(error);
+      toast.error(error.response?.data?.msg || "Error al actualizar cuenta");
     }
   };
  
@@ -86,6 +99,7 @@ const UserProvider = ({ children }) => {
             myOrders,
             getUsers,
             users,
+            updateUser,
           }}>
           {children}
           </UserContext.Provider>

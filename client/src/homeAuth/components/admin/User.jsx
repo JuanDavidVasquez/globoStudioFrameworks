@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import useUser from '../../../hooks/useUser';
+import imagenUpdateUser from '../../../assets/img/globos_artisticos_4.jpg';
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function User() {
   const { user, updateUser } = useUser();
   const [formData, setFormData] = useState({
     nombre: '',
     email: '',
-    password: ''
   });
 
-  // Cargar los datos del usuario cuando el componente se monta
+ 
   useEffect(() => {
     if (user) {
       setFormData({
+        id: user._id || '',
         nombre: user.nombre || '',
         email: user.email || '',
-        password: '' // Normalmente no se prellena la contraseña por razones de seguridad
       });
     }
   }, [user]);
@@ -33,12 +35,18 @@ export default function User() {
   const handleSubmit = (e) => {
     e.preventDefault();
     updateUser(formData);
+   setFormData({
+      nombre: '',
+      email: '',
+    });
+    toast.success("Usuario actualizado correctamente");
   };
 
   return (
+    <> <ToastContainer />
     <div className="user-form-container">
-      <h1>Actualizar Usuario</h1>
       <form onSubmit={handleSubmit}>
+      <h1>Actualizar Usuario</h1>
         <div className="form-group">
           <label htmlFor="nombre">Nombre:</label>
           <input
@@ -61,18 +69,10 @@ export default function User() {
             required
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="password">Contraseña:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-        </div>
         <button type="submit">Actualizar</button>
       </form>
+      <img src={imagenUpdateUser} alt="Imagen de usuario"/>  
     </div>
+    </>
   );
 }
