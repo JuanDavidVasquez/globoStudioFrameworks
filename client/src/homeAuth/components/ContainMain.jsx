@@ -5,6 +5,7 @@ import CotizarUser from './CotizarUser';
 import Users from './admin/Users';
 import { Categories } from '../../pages/Categories';
 import Products from '../../pages/Products';
+import Orders from '../../pages/Orders';
 
 export default function ContainMain() {
 
@@ -19,6 +20,7 @@ export default function ContainMain() {
       {menuSidebar === 'cotizar' && <CotizarUser/>}
       {menuSidebar === 'categories' && <Categories/>}
       {menuSidebar === 'products' && <Products/>}
+      {menuSidebar === 'orders' && <Orders/>}
     </div>
   )
 }

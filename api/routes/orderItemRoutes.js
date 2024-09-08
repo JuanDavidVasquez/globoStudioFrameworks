@@ -8,6 +8,7 @@ import {
     getOrderWithItems,
     getOrdersByUser,
     createOrderWithItems,
+    getOrdersWithItems,
 } from '../controllers/orderItemController.js';
 
 import checkAuth from '../middleware/checkAuth.js';
@@ -19,5 +20,6 @@ router.get('/order/:id', checkAuth, updateOrderwithTotal);
 router.get('/order-complet/:id', checkAuth, getOrderWithItems);
 router.get('/orders/:id', checkAuth, getOrdersByUser);
 router.post('/order-create', checkAuth, createOrderWithItems);
+router.get('/orders', checkAuth, getOrdersWithItems);
 
 export default router;

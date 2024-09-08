@@ -2,6 +2,7 @@ import OrderItem from "../models/OrderItem.js";
 import Order from "../models/Order.js";
 import Producto from "../models/Producto.js";
 import Point from "../models/Point.js";
+import User from "../models/Usuario.js";
 
 const createOrderItem = async (req, res) => {
     const { order_id, product_id, quantity } = req.body;
@@ -290,8 +291,42 @@ const createOrderWithItems = async (req, res) => {
     }
 };
 
+const getOrdersWithItems = async (req, res) => {
+    try {
+        // Buscar todas las órdenes
+        const orders = await Order.find()
+            .select('-__v -createdAt -updatedAt');
+    
+        if (!orders || orders.length === 0) {
+            return res.status(404).json({ msg: "No se encontraron órdenes" });
+        }
+    
+        // Buscar artículos y productos para cada orden, y el usuario asociado
+        const ordersWithItems = await Promise.all(orders.map(async (order) => {
+            // Buscar los artículos para la orden actual
+            const orderItems = await OrderItem.find({ order_id: order._id })
+                .select('-__v -createdAt -updatedAt')
+                .populate({ path: 'product_id', model: 'Producto' });
+            
+            // Buscar el usuario asociado a la orden
+            const user = await User.findById(order.user_id)
+                .select('-__v -createdAt -updatedAt -password -token -confirmado'); 
+            return {
+                ...order.toObject(),
+                items: orderItems,
+                user: user
+            };
+        }));
+        
+        // Enviar la respuesta con las órdenes, sus artículos y el usuario
+        res.json(ordersWithItems);
+        
+    } catch (error) {
+        console.error('Error al obtener órdenes con artículos y usuario:', error);
+        res.status(500).json({ msg: "Error en el servidor" });
+    }
+};
 
-  
   
 
 export{
@@ -301,5 +336,6 @@ export{
     createOrderItems,
     updateOrderwithTotal,
     getOrderWithItems,
-    getOrdersByUser
+    getOrdersByUser,
+    getOrdersWithItems,
 };

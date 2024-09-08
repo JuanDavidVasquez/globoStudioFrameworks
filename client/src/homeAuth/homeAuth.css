@@ -145,3 +145,98 @@
     min-height: 70vh;
     margin-top: 3rem;
   }
+
+  .orders{
+    min-height: 70vh;
+    width: 90%;
+  }
+
+  .order-search .suggestions-list {
+    border: 1px solid #ddd;
+    background-color: #fff;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 150px;
+    overflow-y: auto;
+    position: absolute;
+    width: 100%;
+    z-index: 1000;
+  }
+  
+  .order-search .suggestions-list li {
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  .order-search .suggestions-list li:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .order-search {
+    position: relative;
+
+  }
+  
+  .order-search .suggestions-list {
+    border: 1px solid #ddd;
+    background-color: #fff;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 150px;
+    overflow-y: auto;
+    position: absolute;
+    width: 100%;
+    z-index: 1000;
+  }
+  
+  .order-search .suggestions-list li {
+    font-size: 1em;
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  .order-search .suggestions-list li:hover {
+    background-color: #f0f0f0;
+  }
+  
+  /* Estilos para el contenedor del select */
+.order-search .form-group {
+    margin-bottom: 16px;
+  }
+  
+  /* Estilos para el label del select */
+  .order-search label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* Estilos para el select */
+  .order-search select {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 1.5em;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  
+  /* Estilos para el select cuando está enfocado */
+  .order-search select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    outline: none;
+  }
+  
+  /* Estilos para las opciones del select */
+  .order-search option {
+    padding: 8px;
+  }
+  

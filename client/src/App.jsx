@@ -18,6 +18,7 @@ import User from "./homeAuth/components/admin/User";
 import { Categories } from "./pages/Categories";
 import { CategoryProvider } from "./context/CategoryProvider";
 import Products from "./pages/Products";
+import Orders from "./pages/Orders";
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
                     <Route path="user/:id" element={<User />} />
                     <Route path="category" element={<Categories />} />
                     <Route path="products" element={<Products />} />
+                    <Route path="orders" element={<Orders />} />
                   </Route>
                 </Routes>
                 </CategoryProvider>
