@@ -23,7 +23,10 @@ const crearProducto = async (req, res) => {
         });
         await producto.save();
 
-        res.json(producto);
+        const productoConCategoria = await Producto.findById(producto._id)
+        .populate('category_id', 'name description');
+
+        res.json(productoConCategoria);
 
     } catch (error) {
         console.log(error);

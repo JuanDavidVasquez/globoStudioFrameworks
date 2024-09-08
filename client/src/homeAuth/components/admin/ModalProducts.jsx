@@ -4,13 +4,11 @@ import useCategory from '../../../hooks/useCategory';
 export default function ModalProducts({ isOpen, onClose, onSave, productToEdit }) {
   const { categories, getCategories } = useCategory();
 
-
-
   const [product, setProduct] = useState({
     name: '',
     description: '',
     price: '',
-    category: ''
+    category_id: '' // Cambiado a category_id
   });
 
   useEffect(() => {
@@ -20,21 +18,21 @@ export default function ModalProducts({ isOpen, onClose, onSave, productToEdit }
         name: productToEdit.name,
         description: productToEdit.description,
         price: productToEdit.price,
-        category: productToEdit.category || ''
+        category_id: productToEdit.category_id || '' // Cambiado a category_id
       });
     } else {
       setProduct({
         name: '',
         description: '',
         price: '',
-        category: ''
+        category_id: '' // Cambiado a category_id
       });
     }
   }, [productToEdit]);
 
   useEffect(() => {
     getCategories();
-    }, []);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -85,8 +83,8 @@ export default function ModalProducts({ isOpen, onClose, onSave, productToEdit }
           <div className="form-group">
             <label>Category:</label>
             <select
-              name="category"
-              value={product.category}
+              name="category_id" // Cambiado a category_id
+              value={product.category_id} // Cambiado a category_id
               onChange={handleChange}
               required
             >

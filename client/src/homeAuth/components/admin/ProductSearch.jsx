@@ -37,7 +37,8 @@ export default function ProductSearch({ onEdit, onDelete }) {
           <tr>
             <th>Name</th>
             <th>Description</th>
-            <th>Price</th> {/* Añadido para productos */}
+            <th>Price</th> 
+            <th>Category</th>
             <th></th>
             <th></th>
           </tr>
@@ -48,7 +49,8 @@ export default function ProductSearch({ onEdit, onDelete }) {
               <tr key={product._id}>
                 <td>{product.name}</td>
                 <td>{product.description}</td>
-                <td>{product.price}</td> {/* Añadido para productos */}
+                <td>{product.price}</td>
+                <td>{product.category_id?.name}</td>
                 <td>
                   <button
                     onClick={() => onEdit(product)}

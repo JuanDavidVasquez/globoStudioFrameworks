@@ -25,7 +25,7 @@ const ProductsProvider = ({ children }) => {
       const { data } = await clienteAxios("/productos", config);
 
       setProducts(data); 
-      
+      console.log(data);
 
     } catch (error) {
       console.log(error);
@@ -70,6 +70,7 @@ const ProductsProvider = ({ children }) => {
       
       setProducts([...products, data]);
       toast.success("Product created successfully");
+      console.log(products);
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.msg || "Error creating product");
