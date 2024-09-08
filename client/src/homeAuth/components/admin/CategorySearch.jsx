@@ -37,6 +37,8 @@ export default function CategorySearch({ onEdit, onDelete }) {
           <tr>
             <th>Name</th>
             <th>Description</th>
+            <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>

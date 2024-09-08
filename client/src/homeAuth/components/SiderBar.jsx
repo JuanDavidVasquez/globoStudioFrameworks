@@ -36,7 +36,10 @@ export default function SiderBar() {
           className={` ${menuRuta === 'categories' ? 'activeSidebar' : ''}`}
           onClick={() => handleMenu('categories')}
           >Categories</li>
-          <li>Products</li>
+          <li
+          className={` ${menuRuta === 'products' ? 'activeSidebar' : ''}`}
+          onClick={() => handleMenu('products')}
+          >Products</li>
           <li>Orders</li>
         </ul>
     </aside>
