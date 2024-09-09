@@ -59,6 +59,30 @@ const OrderProvider = ({ children }) => {
         }
     };
 
+    const updateOrderStatus = async (order) => {
+      console.log(order);
+        try {
+            const token = localStorage.getItem("token");
+            if (!token) return;
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            };
+
+            const { data } = await clienteAxios.put(`/orders/update-status/${order.id}`, order, config);
+
+            toast.success("Order actualizada correctamente");
+
+            console.log(data);
+
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response?.data?.msg || "Error al actualizar order");
+    };
+  };
 
   return (
     <OrderContext.Provider
@@ -67,6 +91,7 @@ const OrderProvider = ({ children }) => {
         getOrders,
         orders,
         order,
+        updateOrderStatus,
       }}
     >
       {children}

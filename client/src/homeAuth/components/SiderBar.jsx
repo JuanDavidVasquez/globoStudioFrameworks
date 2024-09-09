@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import useHome from '../../hooks/useHome';
 import PointsUser from './PointsUser';
+import useAuth from '../../hooks/useAuth';
 
 export default function SiderBar() {
 
   const { menuSidebar, setMenuSidebar } = useHome();  
   const [menuRuta, setMenuRuta] = useState('');
+  const { auth } = useAuth();
 
 
   const handleMenu = (ruta) => {
@@ -26,7 +28,8 @@ export default function SiderBar() {
             className={` ${menuRuta === 'cotizar' ? 'activeSidebar' : ''}`}
              onClick={() => handleMenu('cotizar')}>Cotizar</li>
         </ul>
-        <ul>
+        { auth.role === 'admin' && 
+          <ul>
           <li className='asidebar-admin'>Admin</li>
           <li
           className={` ${menuRuta === 'users' ? 'activeSidebar' : ''}`}
@@ -45,6 +48,7 @@ export default function SiderBar() {
           onClick={() => handleMenu('orders')}
           >Orders</li>
         </ul>
+        }
     </aside>
   );
 }

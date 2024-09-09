@@ -75,7 +75,7 @@ export default function Login() {
           Don't have an account? <Link to="/register">Register</Link>
         </p>
         <p>
-          Forgot your password? <Link to="/forgot-password">Recover password</Link>
+          Forgot your password? <Link to="/olvide-password">Recover password</Link>
         </p>
       </div>
       <div className="loginImage">

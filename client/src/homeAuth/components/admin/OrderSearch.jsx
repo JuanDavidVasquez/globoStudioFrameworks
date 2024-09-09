@@ -57,9 +57,10 @@ const OrderSearch = ({ orders = [], onSearch }) => {
         <select id="status" value={selectedStatus} onChange={handleStatusChange}>
           <option value="">All</option>
           <option value="pendiente">Pending</option>
-          <option value="creacion">Completed</option>
+          <option value="creacion">Creación</option>
           <option value="montaje">Montaje</option>
           <option value="envio">Envio</option>
+          <option value="completed">Completed</option>
           <option value="canceled">Canceled</option>
           {/* Añade aquí más opciones si tienes otros estados */}
         </select>

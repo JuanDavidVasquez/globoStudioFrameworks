@@ -85,6 +85,37 @@ const obtenerOrder = async (req, res) => {
   }
 };
 
+const orderUpdate = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  if (!status) {
+    return res.status(400).json({ msg: "El campo 'status' es requerido." });
+  }
+
+  try {
+    // Buscar la orden por ID
+    const order = await Order.findById(id);
+
+    if (!order) {
+      return res.status(404).json({ msg: "Orden no encontrada." });
+    }
+
+    // Actualizar el estado de la orden
+    order.status = status;
+
+    // Guardar los cambios en la base de datos
+    const updatedOrder = await order.save();
+
+    // Enviar respuesta con la orden actualizada
+    res.status(200).json(updatedOrder);
+  } catch (error) {
+    console.error('Error al actualizar la orden:', error);
+    res.status(500).json({ msg: "Error en el servidor." });
+  }
+};
 
 
-export { createOrder, obtenerOrderUser, obtenerOrder };
+
+
+export { createOrder, obtenerOrderUser, obtenerOrder, orderUpdate };

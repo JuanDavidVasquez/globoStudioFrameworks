@@ -5,6 +5,7 @@ import { NavBar } from './NavBar';
 import { NavMenu } from './NavMenu';
 
 export const Header = () => {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const headerImgRef = useRef(null);
   const wrapperRef = useRef(null);
@@ -17,9 +18,21 @@ export const Header = () => {
     setIsMenuOpen(false);
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   const headerStyle = {
     backgroundImage: `url(${logoPNG})`,
-    backgroundSize: '30%',
+    backgroundSize: windowWidth <= 400 ? '60%' : '30%',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     overflow: 'hidden'

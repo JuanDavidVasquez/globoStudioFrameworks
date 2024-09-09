@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Modal.css';
+import { Link } from 'react-router-dom';
 
 // Datos de prueba
 const categories = [
@@ -29,6 +30,7 @@ export const Cotiza = ({ open, onClose }) => {
   const [selectedProduct, setSelectedProduct] = useState('');
   const [cart, setCart] = useState([]);
   const [pointsToUse, setPointsToUse] = useState('');
+
 
   const handleCategoryChange = (e) => {
     const categoryId = e.target.value;
@@ -98,6 +100,8 @@ export const Cotiza = ({ open, onClose }) => {
       <div className="modal-overlay">
         <div className="modal-content">
           <button onClick={onClose} className="modal-close"><i className="fas fa-times"></i></button>
+          
+      <h1>Para realizar una Cotización formal debes iniciar sesion</h1><br/><Link to="/login">Iniciar Sesion</Link>
           <h2>Formulario de Cotización</h2>
           <form>
             <label>

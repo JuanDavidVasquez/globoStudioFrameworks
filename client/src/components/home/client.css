@@ -65,16 +65,16 @@
   }
   
   #section1 {
-    background-image: url("https://www.yudiz.com/codepen/studio-r/bg-living.jpg");
+    background-image: url("../../assets/img/globoFondoClient1.jpg");
   }
   #section2 {
-    background-image: url("https://www.yudiz.com/codepen/studio-r/bg-kitchen.jpg");
+    background-image: url("../../assets/img/fondoGloboClient2.jpg");
   }
   #section3 {
-    background-image: url("https://www.yudiz.com/codepen/studio-r/bg-badroom.jpg");
+    background-image: url("../../assets/img/_0.jpg");
   }
   #section4 {
-    background-image: url("https://www.yudiz.com/codepen/studio-r/bg-office.jpg");
+    background-image: url("../../assets/img/_1.jpg");
   }
   .image {
     height: 100%;
@@ -105,23 +105,17 @@
     transform: translate(0%, -50%);
     -webkit-transform: translate(0%, -50%);
   }
-  #section1 .image video {
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-    object-position: center center;
-    position: absolute;
-    top: 0;
-    left: 0;
+  #section1 .image {
+    background-image: url("../../assets/img/globoClient.jpg");
   }
   #section2 .image {
-    background-image: url("https://www.yudiz.com/codepen/studio-r/bg-kitchen.jpg");
+    background-image: url("../../assets/img/globo2Fondo.jpg");
   }
   #section3 .image {
-    background-image: url("https://www.yudiz.com/codepen/studio-r/bg-badroom.jpg");
+    background-image: url("../../assets/img/_2.jpg");
   }
   #section4 .image {
-    background-image: url("https://www.yudiz.com/codepen/studio-r/bg-office.jpg");
+    background-image: url("../../assets/img/_3.jpg");
   }
   
   /* Section Text */
@@ -132,11 +126,23 @@
     transform: translate(100px, -50%);
     -webkit-transform: translate(100px, -50%);
     width: 43%;
+    font-size: 5em;
   }
-  #section1 .text {
-    top: 50%;
+    .text h2 {
+        font-size: 1.2em;
+        font-family: "Rulh", sans-serif;
+        font-weight: 500;
+        color: var(--white);
+        letter-spacing: 1.2px;
+        -webkit-text-transform: uppercase;
+        text-transform: uppercase;
+    }
+  .text p{
+    font-size: 1em; 
+    font-family: "Vibes", sans-serif;
+    color: rgba(255, 255, 255, 0.601);
   }
-  
+
   /* Scroll Button */
   .scrollBtn {
     position: absolute;
@@ -410,3 +416,21 @@
     }
   }
   
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px; 
+    backdrop-filter: blur(10px); 
+    padding: 10px; 
+    color: #fff; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  }
+  
+  @media screen and (max-width: 991px) {
+    .text{
+        font-size: 2em;
+    }
+    #section1 .text {
+        top: -29%;
+    }
+    
+  }
