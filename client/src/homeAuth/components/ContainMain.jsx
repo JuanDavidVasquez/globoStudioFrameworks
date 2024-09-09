@@ -6,6 +6,7 @@ import Users from './admin/Users';
 import { Categories } from '../../pages/Categories';
 import Products from '../../pages/Products';
 import Orders from '../../pages/Orders';
+import Welcome from './Welcome';
 
 export default function ContainMain() {
 
@@ -21,6 +22,7 @@ export default function ContainMain() {
       {menuSidebar === 'categories' && <Categories/>}
       {menuSidebar === 'products' && <Products/>}
       {menuSidebar === 'orders' && <Orders/>}
+      {menuSidebar === '' && <Welcome/>}
     </div>
   )
 }

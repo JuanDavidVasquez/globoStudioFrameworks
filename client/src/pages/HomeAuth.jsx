@@ -19,7 +19,7 @@ export const HomeAuth = () => {
 
   return (
     <main className='main-container-auth'>
-    <h1>Welcome <span>{auth.nombre}</span> a My Globo Studio</h1>
+    <h1 className='headerAuth'>My Globo Studio <span>{auth.nombre}</span></h1>
         <SiderBar/>
         <ContainMain/>
     </main>

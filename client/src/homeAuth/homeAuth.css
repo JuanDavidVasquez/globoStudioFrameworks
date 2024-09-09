@@ -240,3 +240,8 @@
     padding: 8px;
   }
   
+  .headerAuth{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }

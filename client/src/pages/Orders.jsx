@@ -33,7 +33,7 @@ const Orders = () => {
       <OrderSearch orders={orders} onSearch={handleSearch} />
       <table>
         <thead>
-          <tr>
+          <tr className='trOrders'>
             <th>ID</th>
             <th>Customer Name</th>
             <th>Total</th>
@@ -44,10 +44,11 @@ const Orders = () => {
           {filteredOrders.length > 0 ? (
             filteredOrders.map(order => (
               <tr key={order._id}>
-                <td>{order._id}</td>
-                <td>{order.user?.email}</td>
-                <td>{order.total}</td>
-                <td>{order.status}</td>
+                <td className='tableOrders'>{order._id}</td>
+                <td className='tableOrders'>{order.user?.email}</td>
+                <td className='tableOrders'>{order.total}</td>
+                <td className='tableOrders'>{order.status}</td>
+                <td className='tableOrders'><button className='btn btn-primary'>Editar</button></td>
               </tr>
             ))
           ) : (
