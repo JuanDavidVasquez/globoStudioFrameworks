@@ -5,18 +5,19 @@ import { Service } from '../components/home/Service'
 import { Cotiza } from '../components/home/Cotiza'
 import { Contact } from '../components/home/Contact'
 
-// Importación de imágenes
+
 import image1 from '../assets/img/globo_artistico_1_n.png'
 import image2 from '../assets/img/globos_artisticos_2.jpg'
 import image3 from '../assets/img/globos_artisticos_3.jpg'
 import image4 from '../assets/img/globos_artisticos_4.jpg'
+import Clientes from '../components/home/Clientes'
 
 export const Home = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const [imageIndex, setImageIndex] = useState(0); 
     const images = [image1, image2, image3, image4]; 
     const texts = ['Welcome', 'About', 'Services', 'Contact'];
-    const colors = ['#000000', '#FF4500', '#FF69B4', '#00FF00']; // Corregido el último color
+    const colors = ['#000000', '#FF4500', '#FF69B4', '#00FF00'];
 
     const handleCloseModal = () => {
         setModalOpen(!modalOpen);
@@ -56,6 +57,7 @@ export const Home = () => {
             <Header />
             <About />
             <Service />
+            <Clientes />
             {modalOpen && <Cotiza open={modalOpen} onClose={handleCloseModal} />}
             <Contact />
 
